@@ -6,10 +6,10 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+
 @Getter
 @Setter
-public class AddFreelancerResponse {
-    private String freelancerId ;
+public class FreelancerUpdateResponse {
     private String jobTitle;
     private String jobDescription;
     private String firstName;
@@ -18,7 +18,6 @@ public class AddFreelancerResponse {
     private String email;
     private Resume cv;
     private String jobType;
-    private LocalDateTime dateApplied;
+    private LocalDateTime dateUpdated;
     private String message;
-
 }

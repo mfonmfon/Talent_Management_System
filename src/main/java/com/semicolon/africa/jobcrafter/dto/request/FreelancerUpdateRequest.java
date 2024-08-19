@@ -1,4 +1,4 @@
-package com.semicolon.africa.jobcrafter.dto.response;
+package com.semicolon.africa.jobcrafter.dto.request;
 
 import com.semicolon.africa.jobcrafter.data.model.Resume;
 import lombok.Getter;
@@ -8,8 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class AddFreelancerResponse {
-    private String freelancerId ;
+public class FreelancerUpdateRequest {
     private String jobTitle;
     private String jobDescription;
     private String firstName;
@@ -18,7 +17,6 @@ public class AddFreelancerResponse {
     private String email;
     private Resume cv;
     private String jobType;
-    private LocalDateTime dateApplied;
-    private String message;
+    private LocalDateTime dateUpdated;
 
 }

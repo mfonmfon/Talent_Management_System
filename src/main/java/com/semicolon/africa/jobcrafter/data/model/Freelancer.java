@@ -31,6 +31,7 @@ public class Freelancer {
     private String jobDescription;
     private String jobType;
     private LocalDateTime dateCreated;
+    private LocalDateTime dateUpdated;
 
     @DBRef
     List<Freelancer> allFreelancers = new ArrayList<>();

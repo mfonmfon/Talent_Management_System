@@ -5,10 +5,8 @@ import com.semicolon.africa.jobcrafter.data.repository.FreelancerRepository;
 import com.semicolon.africa.jobcrafter.dto.request.AddFreelancerRequest;
 import com.semicolon.africa.jobcrafter.dto.request.FreelancerLoginRequest;
 import com.semicolon.africa.jobcrafter.dto.request.FreelancerRegisterRequest;
-import com.semicolon.africa.jobcrafter.dto.response.AddFreelancerResponse;
-import com.semicolon.africa.jobcrafter.dto.response.FreelancerLoginResponse;
-import com.semicolon.africa.jobcrafter.dto.response.FreelancerLogoutResponse;
-import com.semicolon.africa.jobcrafter.dto.response.FreelancerRegisterResponse;
+import com.semicolon.africa.jobcrafter.dto.request.FreelancerUpdateRequest;
+import com.semicolon.africa.jobcrafter.dto.response.*;
 import com.semicolon.africa.jobcrafter.exception.InCorrectPassword;
 import com.semicolon.africa.jobcrafter.exception.InvalidFreelancerEmail;
 import com.semicolon.africa.jobcrafter.exception.TitleAlreadyExist;
@@ -119,4 +117,49 @@ public class FreelancerServiceImpl implements FreelancerServices {
     public List<Freelancer> displayAllFreelancers() {
         return freelancerRepository.findAll();
     }
+
+    @Override
+    public FreelancerDeleteResponse withdrawApplication(String id) {
+        Freelancer freelancer = findFreelancerById(id);
+        freelancerRepository.delete(freelancer);
+        FreelancerDeleteResponse response = new FreelancerDeleteResponse();
+        response.setMessage("Deleted");
+        return response;
+    }
+
+    private Freelancer findFreelancerById(String id) {
+        for (Freelancer freelancer: freelancerRepository.findAll()){
+            if (freelancer.getFreelancerId().equals(id)){
+                return freelancer;
+            }
+        }
+        throw new InvalidFreelancerEmail("Not Found");
+    }
+
+    @Override
+    public FreelancerUpdateResponse updateApplication(FreelancerUpdateRequest request) {
+        Freelancer freelancer = new Freelancer();
+        freelancer.setFirstName(request.getFirstName());
+        freelancer.setLastName(request.getLastName());
+        freelancer.setJobTitle(request.getJobTitle());
+        freelancer.setJobDescription(request.getJobDescription());
+        freelancer.setPhoneNumber(request.getPhoneNumber());
+        freelancer.setCv(request.getCv());
+        freelancer.setJobType(request.getJobType());
+        freelancer.setDateUpdated(request.getDateUpdated());
+        FreelancerUpdateResponse response = new FreelancerUpdateResponse();
+        response.setFirstName(freelancer.getFirstName());
+        response.setLastName(freelancer.getLastName());
+        response.setJobTitle(freelancer.getJobTitle());
+        response.setJobDescription(freelancer.getJobDescription());
+        response.setEmail(freelancer.getEmail());
+        response.setCv(freelancer.getCv());
+        response.setJobType(freelancer.getJobType());
+        response.setPhoneNumber(freelancer.getPhoneNumber());
+        response.setDateUpdated(freelancer.getDateUpdated());
+        response.setMessage("Updated successfully");
+        return response;
+    }
+
+
 }
