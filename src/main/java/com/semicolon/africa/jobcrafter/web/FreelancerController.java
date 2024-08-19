@@ -1,6 +1,10 @@
 package com.semicolon.africa.jobcrafter.web;
 
+import com.semicolon.africa.jobcrafter.dto.request.AddFreelancerRequest;
+import com.semicolon.africa.jobcrafter.dto.request.FreelancerLoginRequest;
 import com.semicolon.africa.jobcrafter.dto.request.FreelancerRegisterRequest;
+import com.semicolon.africa.jobcrafter.dto.response.AddFreelancerResponse;
+import com.semicolon.africa.jobcrafter.dto.response.FreelancerLoginResponse;
 import com.semicolon.africa.jobcrafter.dto.response.FreelancerRegisterResponse;
 import com.semicolon.africa.jobcrafter.dto.response.PostApiResponse;
 import com.semicolon.africa.jobcrafter.services.FreelancerServices;
@@ -25,6 +29,31 @@ public class FreelancerController {
             FreelancerRegisterResponse response = freelancerServices.register(request);
             return new ResponseEntity<>(new PostApiResponse(true, response),
                     HttpStatus.CREATED);
+        }
+        catch (Exception exception){
+            return new ResponseEntity<>(new PostApiResponse(false, exception),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody FreelancerLoginRequest request){
+        try {
+            FreelancerLoginResponse response = freelancerServices.login(request);
+            return new ResponseEntity<>(new PostApiResponse(true, response),
+                    HttpStatus.OK);
+        }
+        catch (Exception exception){
+            return new ResponseEntity<>(new PostApiResponse(false, exception),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("/apply")
+    public ResponseEntity<?> apply(AddFreelancerRequest request){
+        try {
+            AddFreelancerResponse response = freelancerServices.apply(request);
+            return new ResponseEntity<>(new PostApiResponse(true,response),
+                    HttpStatus.OK);
         }
         catch (Exception exception){
             return new ResponseEntity<>(new PostApiResponse(false, exception),
