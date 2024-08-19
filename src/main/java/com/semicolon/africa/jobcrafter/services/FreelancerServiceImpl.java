@@ -33,6 +33,9 @@ public class FreelancerServiceImpl implements FreelancerServices {
             throw new InvalidFreelancerEmail("OGA!! you no go school? " +
                     "Enter the correct email before we go fight now!!");
         }
+        else if (!freelancerRepository.existsByEmail(freelancer.getEmail())){
+            throw new InvalidFreelancerEmail("Already exist");
+        }
         freelancer.setUserName(request.getUserName());
         freelancer.setPassword(request.getPassword());
         FreelancerRegisterResponse response = new FreelancerRegisterResponse();
@@ -51,26 +54,32 @@ public class FreelancerServiceImpl implements FreelancerServices {
 
     @Override
     public FreelancerLoginResponse login(FreelancerLoginRequest request) {
-        Freelancer freelancer = findFreelancerByEmail(request.getEmail());
-        validatePassword(freelancer,request.getPassword());
-        freelancer.setLoggedIn(true);
-        freelancerRepository.save(freelancer);
-        FreelancerLoginResponse response = new FreelancerLoginResponse();
-        response.setMessage("Login Successfully");
-        response.setLoggedIn(freelancer.isLoggedIn());
-
-        return response;
+        Freelancer freelancer = new Freelancer();
+          if (freelancerRepository.existsByEmail(freelancer.getEmail())) {
+            throw new InvalidFreelancerEmail("Already exist");
+        }
+          else if (freelancerRepository.existsByEmail(request.getEmail())) {
+              throw new InvalidFreelancerEmail("Not Found");
+          }else{
+            freelancer.setLoggedIn(true);
+            freelancerRepository.save(freelancer);
+            FreelancerLoginResponse response = new FreelancerLoginResponse();
+            response.setMessage("Login Successfully");
+            response.setLoggedIn(freelancer.isLoggedIn());
+            return response;
+        }
     }
 
-    private void validatePassword(Freelancer freelancer, String password) {
-        if(!freelancer.getPassword().equals(password))
+    private void validatePassword( String password) {
+        if(freelancerRepository.findByPassword(password))
             throw new TitleAlreadyExist("invalid credentials");
     }
 
     private Freelancer findFreelancerByEmail(String email) {
-        if (!freelancerRepository.existsByEmail(email)){
-            throw new InCorrectPassword("Password already exist");
+        if (freelancerRepository.existsByEmail(email)){
+            throw new InCorrectPassword("Email already exist");
         }
+        return freelancerRepository.findByEmail(email);
     }
 
     @Override
@@ -106,7 +115,6 @@ public class FreelancerServiceImpl implements FreelancerServices {
         response.setMessage("Applied successfully");
         return response;
     }
-
     @Override
     public List<Freelancer> displayAllFreelancers() {
         return freelancerRepository.findAll();

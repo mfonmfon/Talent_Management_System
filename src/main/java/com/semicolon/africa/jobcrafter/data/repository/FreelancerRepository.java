@@ -7,4 +7,10 @@ public interface FreelancerRepository extends MongoRepository<Freelancer, String
 
     boolean existsByEmail(String email);
 
+    Freelancer findByEmail(String email);
+
+    boolean findByPassword(String password);
+
+    boolean existsByPassword(String password);
+
 }
