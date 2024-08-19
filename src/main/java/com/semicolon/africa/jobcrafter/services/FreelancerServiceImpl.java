@@ -27,21 +27,19 @@ public class FreelancerServiceImpl implements FreelancerServices {
         validateEmail(request.getEmail());
         Freelancer freelancer = new Freelancer();
         freelancer.setEmail(request.getEmail());
-        if (!freelancer.getEmail().contains("@") && freelancer.getEmail().contains(">")){
+        if (!freelancer.getEmail().contains("@") && freelancer.getEmail().contains(">")) {
             throw new InvalidFreelancerEmail("OGA!! you no go school? " +
                     "Enter the correct email before we go fight now!!");
+        } else {
+            freelancer.setUserName(request.getUserName());
+            freelancer.setPassword(request.getPassword());
+            FreelancerRegisterResponse response = new FreelancerRegisterResponse();
+            response.setEmail(freelancer.getEmail());
+            response.setUserName(request.getUserName());
+            response.setPassword(request.getPassword());
+            response.setMessage("Register successfully");
+            return response;
         }
-        else if (!freelancerRepository.existsByEmail(freelancer.getEmail())){
-            throw new InvalidFreelancerEmail("Already exist");
-        }
-        freelancer.setUserName(request.getUserName());
-        freelancer.setPassword(request.getPassword());
-        FreelancerRegisterResponse response = new FreelancerRegisterResponse();
-        response.setEmail(freelancer.getEmail());
-        response.setUserName(request.getUserName());
-        response.setPassword(request.getPassword());
-        response.setMessage("Register successfully");
-        return response;
     }
     private void validateEmail(String email) {
        boolean isEmailExist = freelancerRepository.existsByEmail(email);
@@ -49,16 +47,13 @@ public class FreelancerServiceImpl implements FreelancerServices {
            throw new InvalidFreelancerEmail("Already exist");
        }
     }
-
     @Override
     public FreelancerLoginResponse login(FreelancerLoginRequest request) {
         Freelancer freelancer = new Freelancer();
-          if (freelancerRepository.existsByEmail(freelancer.getEmail())) {
-            throw new InvalidFreelancerEmail("Already exist");
-        }
-          else if (freelancerRepository.existsByEmail(request.getEmail())) {
+//        validatePassword(request.getPassword());
+          if (freelancerRepository.existsByEmail(request.getEmail())) {
               throw new InvalidFreelancerEmail("Not Found");
-          }else{
+          } else {
             freelancer.setLoggedIn(true);
             freelancerRepository.save(freelancer);
             FreelancerLoginResponse response = new FreelancerLoginResponse();
@@ -67,7 +62,6 @@ public class FreelancerServiceImpl implements FreelancerServices {
             return response;
         }
     }
-
     private void validatePassword( String password) {
         if(freelancerRepository.findByPassword(password))
             throw new TitleAlreadyExist("invalid credentials");
@@ -79,7 +73,6 @@ public class FreelancerServiceImpl implements FreelancerServices {
         }
         return freelancerRepository.findByEmail(email);
     }
-
     @Override
     public FreelancerLogoutResponse logout(String email) {
         Freelancer freelancer = findFreelancerByEmail(email);
@@ -101,6 +94,7 @@ public class FreelancerServiceImpl implements FreelancerServices {
         freelancer.setCv(request.getCv());
         freelancer.setJobType(request.getJobType());
         freelancer.setDateCreated(LocalDateTime.now());
+        freelancerRepository.save(freelancer);
         AddFreelancerResponse response = new AddFreelancerResponse();
         response.setFirstName(freelancer.getFirstName());
         response.setLastName(freelancer.getLastName());
@@ -147,6 +141,7 @@ public class FreelancerServiceImpl implements FreelancerServices {
         freelancer.setCv(request.getCv());
         freelancer.setJobType(request.getJobType());
         freelancer.setDateUpdated(request.getDateUpdated());
+        freelancerRepository.save(freelancer);
         FreelancerUpdateResponse response = new FreelancerUpdateResponse();
         response.setFirstName(freelancer.getFirstName());
         response.setLastName(freelancer.getLastName());
