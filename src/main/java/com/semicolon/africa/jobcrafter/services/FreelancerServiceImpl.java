@@ -49,10 +49,14 @@ public class FreelancerServiceImpl implements FreelancerServices {
     }
     @Override
     public FreelancerLoginResponse login(FreelancerLoginRequest request) {
+        validatePassword(request.getPassword());
         Freelancer freelancer = new Freelancer();
-//        validatePassword(request.getPassword());
+        if (!freelancer.getEmail().contains("@") && freelancer.getEmail().contains(".")) {
+            throw new InvalidFreelancerEmail("OGA!! you no go school? " +
+                    "Enter the correct email before we go fight now!!");
+        }
           if (freelancerRepository.existsByEmail(request.getEmail())) {
-              throw new InvalidFreelancerEmail("Not Found");
+              throw new InvalidFreelancerEmail("This email already exist oga");
           } else {
             freelancer.setLoggedIn(true);
             freelancerRepository.save(freelancer);
@@ -66,7 +70,6 @@ public class FreelancerServiceImpl implements FreelancerServices {
         if(freelancerRepository.findByPassword(password))
             throw new TitleAlreadyExist("invalid credentials");
     }
-
     private Freelancer findFreelancerByEmail(String email) {
         if (freelancerRepository.existsByEmail(email)){
             throw new InCorrectPassword("Email already exist");

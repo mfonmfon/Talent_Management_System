@@ -70,7 +70,6 @@ public class FreelancerController {
                     HttpStatus.BAD_REQUEST);
         }
     }
-
     @GetMapping("displayAll")
     public ResponseEntity<?> displayAll(){
         try {
