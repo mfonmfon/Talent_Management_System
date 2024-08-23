@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.semicolon.africa.jobcrafter.utils.Mapper.getAddFreelancerResponse;
+
 @Service
 public class FreelancerServiceImpl implements FreelancerServices {
 
@@ -106,20 +109,10 @@ public class FreelancerServiceImpl implements FreelancerServices {
             throw new InvalidFreelancerEmail("Email already exists");
         }
         freelancerRepository.save(freelancer);
-        AddFreelancerResponse response = new AddFreelancerResponse();
-        response.setFreelancerId(freelancer.getId());
-        response.setFirstName(freelancer.getFirstName());
-        response.setLastName(freelancer.getLastName());
-        response.setJobTitle(freelancer.getJobTitle());
-        response.setJobDescription(freelancer.getJobDescription());
-        response.setEmail(freelancer.getEmail());
-        response.setCv(freelancer.getCv());
-        response.setJobType(freelancer.getJobType());
-        response.setPhoneNumber(freelancer.getPhoneNumber());
-        response.setDateApplied(freelancer.getDateCreated());
-        response.setMessage("Applied successfully");
-        return response;
+        return getAddFreelancerResponse(freelancer);
     }
+
+
     @Override
     public List<Freelancer> displayAllFreelancers() {
         return freelancerRepository.findAll();
