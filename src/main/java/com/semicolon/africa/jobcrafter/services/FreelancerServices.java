@@ -1,6 +1,7 @@
 package com.semicolon.africa.jobcrafter.services;
 
 import com.semicolon.africa.jobcrafter.data.model.Freelancer;
+import com.semicolon.africa.jobcrafter.data.model.Task;
 import com.semicolon.africa.jobcrafter.dto.request.AddFreelancerRequest;
 import com.semicolon.africa.jobcrafter.dto.request.FreelancerLoginRequest;
 import com.semicolon.africa.jobcrafter.dto.request.FreelancerUpdateRequest;
@@ -20,7 +21,7 @@ public interface FreelancerServices {
     FreelancerLogoutResponse logout(String email);
     AddFreelancerResponse apply(AddFreelancerRequest request);
 
-    List<Freelancer> displayAllFreelancers();
+    List<Task> displayAllTask();
 
     FreelancerDeleteResponse withdrawApplication(String id);
 

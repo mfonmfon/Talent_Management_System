@@ -28,7 +28,6 @@ class FreelancerServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        freelancerServices.delete();
         freelancerRepository.deleteAll();
     }
 

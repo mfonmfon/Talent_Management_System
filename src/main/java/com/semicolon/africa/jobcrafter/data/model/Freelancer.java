@@ -39,5 +39,5 @@ public class Freelancer {
     private LocalDateTime dateUpdated;
 
     @DBRef
-    List<Freelancer> allFreelancers = new ArrayList<>();
+    List<Task> allTask = new ArrayList<>();
 }

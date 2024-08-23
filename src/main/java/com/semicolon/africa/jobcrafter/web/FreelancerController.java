@@ -1,6 +1,7 @@
 package com.semicolon.africa.jobcrafter.web;
 
 import com.semicolon.africa.jobcrafter.data.model.Freelancer;
+import com.semicolon.africa.jobcrafter.data.model.Task;
 import com.semicolon.africa.jobcrafter.dto.request.AddFreelancerRequest;
 import com.semicolon.africa.jobcrafter.dto.request.FreelancerLoginRequest;
 import com.semicolon.africa.jobcrafter.dto.request.FreelancerRegisterRequest;
@@ -74,7 +75,7 @@ public class FreelancerController {
     @GetMapping("displayAll")
     public ResponseEntity<?> displayAll(){
         try {
-            List<Freelancer> freelancers = freelancerServices.displayAllFreelancers();
+            List<Task> freelancers = freelancerServices.displayAllTask();
             return new ResponseEntity<>(new PostApiResponse(true, freelancers),
                     HttpStatus.OK);
         }

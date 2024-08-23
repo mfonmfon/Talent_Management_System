@@ -1,13 +1,15 @@
 package com.semicolon.africa.jobcrafter.services;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import com.semicolon.africa.jobcrafter.data.model.Freelancer;
+import com.semicolon.africa.jobcrafter.data.model.Task;
 import com.semicolon.africa.jobcrafter.data.repository.FreelancerRepository;
+import com.semicolon.africa.jobcrafter.data.repository.TaskRepository;
 import com.semicolon.africa.jobcrafter.dto.request.AddFreelancerRequest;
 import com.semicolon.africa.jobcrafter.dto.request.FreelancerLoginRequest;
 import com.semicolon.africa.jobcrafter.dto.request.FreelancerRegisterRequest;
 import com.semicolon.africa.jobcrafter.dto.request.FreelancerUpdateRequest;
 import com.semicolon.africa.jobcrafter.dto.response.*;
+import com.semicolon.africa.jobcrafter.exception.EmailNotExistException;
 import com.semicolon.africa.jobcrafter.exception.InCorrectPassword;
 import com.semicolon.africa.jobcrafter.exception.InvalidFreelancerEmail;
 import com.semicolon.africa.jobcrafter.exception.TitleAlreadyExist;
@@ -16,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.semicolon.africa.jobcrafter.utils.Mapper.getAddFreelancerResponse;
@@ -27,6 +28,8 @@ public class FreelancerServiceImpl implements FreelancerServices {
     private static final Logger log = LoggerFactory.getLogger(FreelancerServiceImpl.class);
     @Autowired
     private FreelancerRepository freelancerRepository;
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Override
     public FreelancerRegisterResponse register(FreelancerRegisterRequest request) {
@@ -58,8 +61,8 @@ public class FreelancerServiceImpl implements FreelancerServices {
         validatePassword(request.getPassword());
         Freelancer freelancer = new Freelancer();
         if (!freelancer.getEmail().contains("@") || !freelancer.getEmail().contains(".")) {
-            throw new InvalidFreelancerEmail("OGA!! you no go school? " +
-                    "Enter the correct email before we go fight now!!");
+            throw new InvalidFreelancerEmail("Invalid email format, please check the" +
+                    "email and signup again");
         }
           if (!freelancerRepository.existsByEmail(request.getEmail()) || !freelancerRepository
                   .existsByEmail(request.getEmail())) {
@@ -78,8 +81,8 @@ public class FreelancerServiceImpl implements FreelancerServices {
             throw new TitleAlreadyExist("invalid credentials");
     }
     private Freelancer findFreelancerByEmail(String email) {
-        if (freelancerRepository.existsByEmail(email)){
-            throw new InCorrectPassword("Email already exist");
+        if (!freelancerRepository.existsByEmail(email)){
+            throw new InCorrectPassword("Email does not exist");
         }
         return freelancerRepository.findByEmail(email);
     }
@@ -92,10 +95,10 @@ public class FreelancerServiceImpl implements FreelancerServices {
         response.setMessage("Logout successful");
         return response;
     }
-
     @Override
     public AddFreelancerResponse apply(AddFreelancerRequest request) {
         Freelancer freelancer = new Freelancer();
+        findFreelancerByEmail(request.getEmail());
         freelancer.setFirstName(request.getFirstName());
         freelancer.setLastName(request.getLastName());
         freelancer.setJobTitle(request.getJobTitle());
@@ -105,18 +108,15 @@ public class FreelancerServiceImpl implements FreelancerServices {
         freelancer.setCv(request.getCv());
         freelancer.setJobType(request.getJobType());
         freelancer.setDateCreated(request.getDateApplied());
-        if(!freelancerRepository.existsByEmail(freelancer.getEmail())){
-            throw new InvalidFreelancerEmail("Email already exists");
+            freelancerRepository.save(freelancer);
+            return getAddFreelancerResponse(freelancer);
         }
-        freelancerRepository.save(freelancer);
-        return getAddFreelancerResponse(freelancer);
-    }
-
 
     @Override
-    public List<Freelancer> displayAllFreelancers() {
-        return freelancerRepository.findAll();
+    public List<Task> displayAllTask() {
+        return taskRepository.findAll();
     }
+
 
     @Override
     public FreelancerDeleteResponse withdrawApplication(String id) {
