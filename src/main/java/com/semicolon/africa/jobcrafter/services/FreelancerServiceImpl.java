@@ -1,5 +1,6 @@
 package com.semicolon.africa.jobcrafter.services;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.semicolon.africa.jobcrafter.data.model.Freelancer;
 import com.semicolon.africa.jobcrafter.data.repository.FreelancerRepository;
 import com.semicolon.africa.jobcrafter.dto.request.AddFreelancerRequest;
@@ -10,29 +11,31 @@ import com.semicolon.africa.jobcrafter.dto.response.*;
 import com.semicolon.africa.jobcrafter.exception.InCorrectPassword;
 import com.semicolon.africa.jobcrafter.exception.InvalidFreelancerEmail;
 import com.semicolon.africa.jobcrafter.exception.TitleAlreadyExist;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 @Service
 public class FreelancerServiceImpl implements FreelancerServices {
 
+    private static final Logger log = LoggerFactory.getLogger(FreelancerServiceImpl.class);
     @Autowired
     private FreelancerRepository freelancerRepository;
 
     @Override
     public FreelancerRegisterResponse register(FreelancerRegisterRequest request) {
-        validateEmail(request.getEmail());
-        Freelancer freelancer = new Freelancer();
-        freelancer.setEmail(request.getEmail());
-        if (!freelancer.getEmail().contains("@") && freelancer.getEmail().contains(">")) {
-            throw new InvalidFreelancerEmail("OGA!! you no go school? " +
-                    "Enter the correct email before we go fight now!!");
-        } else {
+            Freelancer freelancer = new Freelancer();
+            validateEmail(request.getEmail());
+            freelancer.setEmail(request.getEmail());
             freelancer.setUserName(request.getUserName());
             freelancer.setPassword(request.getPassword());
+        if (!freelancer.getEmail().contains("@") || !freelancer.getEmail().contains(".")) {
+            throw new InvalidFreelancerEmail("Invalid email format, please check the " +
+                    "email and signup again");
+        } else {
             FreelancerRegisterResponse response = new FreelancerRegisterResponse();
             response.setEmail(freelancer.getEmail());
             response.setUserName(request.getUserName());
@@ -51,12 +54,13 @@ public class FreelancerServiceImpl implements FreelancerServices {
     public FreelancerLoginResponse login(FreelancerLoginRequest request) {
         validatePassword(request.getPassword());
         Freelancer freelancer = new Freelancer();
-        if (!freelancer.getEmail().contains("@") && freelancer.getEmail().contains(".")) {
+        if (!freelancer.getEmail().contains("@") || !freelancer.getEmail().contains(".")) {
             throw new InvalidFreelancerEmail("OGA!! you no go school? " +
                     "Enter the correct email before we go fight now!!");
         }
-          if (freelancerRepository.existsByEmail(request.getEmail())) {
-              throw new InvalidFreelancerEmail("This email already exist oga");
+          if (!freelancerRepository.existsByEmail(request.getEmail()) || !freelancerRepository
+                  .existsByEmail(request.getEmail())) {
+              throw new InvalidFreelancerEmail("Invalid Details");
           } else {
             freelancer.setLoggedIn(true);
             freelancerRepository.save(freelancer);
@@ -94,11 +98,16 @@ public class FreelancerServiceImpl implements FreelancerServices {
         freelancer.setJobTitle(request.getJobTitle());
         freelancer.setJobDescription(request.getJobDescription());
         freelancer.setPhoneNumber(request.getPhoneNumber());
+        freelancer.setEmail(request.getEmail());
         freelancer.setCv(request.getCv());
         freelancer.setJobType(request.getJobType());
-        freelancer.setDateCreated(LocalDateTime.now());
+        freelancer.setDateCreated(request.getDateApplied());
+        if(!freelancerRepository.existsByEmail(freelancer.getEmail())){
+            throw new InvalidFreelancerEmail("Email already exists");
+        }
         freelancerRepository.save(freelancer);
         AddFreelancerResponse response = new AddFreelancerResponse();
+        response.setFreelancerId(freelancer.getId());
         response.setFirstName(freelancer.getFirstName());
         response.setLastName(freelancer.getLastName());
         response.setJobTitle(freelancer.getJobTitle());
@@ -107,6 +116,7 @@ public class FreelancerServiceImpl implements FreelancerServices {
         response.setCv(freelancer.getCv());
         response.setJobType(freelancer.getJobType());
         response.setPhoneNumber(freelancer.getPhoneNumber());
+        response.setDateApplied(freelancer.getDateCreated());
         response.setMessage("Applied successfully");
         return response;
     }
@@ -126,7 +136,7 @@ public class FreelancerServiceImpl implements FreelancerServices {
 
     private Freelancer findFreelancerById(String id) {
         for (Freelancer freelancer: freelancerRepository.findAll()){
-            if (freelancer.getFreelancerId().equals(id)){
+            if (freelancer.getId().equals(id)){
                 return freelancer;
             }
         }
