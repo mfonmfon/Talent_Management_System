@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.semicolon.africa.jobcrafter.utils.Mapper.createResumeRequestMapper;
-import static com.semicolon.africa.jobcrafter.utils.Mapper.getAddResumeResponse;
+import static com.semicolon.africa.jobcrafter.utils.Mapper.*;
 
 @Service
 public class ResumeServiceImpl implements ResumeService{
@@ -25,9 +24,9 @@ public class ResumeServiceImpl implements ResumeService{
 
     @Override
     public AddResumeResponse createResume(AddResumeRequest request) {
-        Resume resume = createResumeRequestMapper(request);
         validateResumeEmail(request.getEmail());
-        resumeRepository.save(resume);
+        Resume resume = createResumeRequestMapper(request);
+        resume = resumeRepository.save(resume);
         return getAddResumeResponse(resume);
     }
 
@@ -38,22 +37,29 @@ public class ResumeServiceImpl implements ResumeService{
         }
     }
 
-
     @Override
     public UpdateResumeResponse updateResume(UpdateResumeRequest request) {
-        Resume resume = new Resume();
-        resume.setFirstName(request.getFirstName());
-
-        return null;
+        Resume resume = getResumeUpdate(request);
+        resume= resumeRepository.save(resume);
+        return getUpdateResumeResponse(resume);
     }
 
     @Override
     public DeleteResumeResponse deleteResume(String id) {
-        return null;
+        Resume resume = findResumeById(id);
+        resumeRepository.delete(resume);
+        DeleteResumeResponse response = new DeleteResumeResponse();
+        response.setMessage("Resume Deleted");
+        return response;
+    }
+
+    private Resume findResumeById(String id) {
+        return resumeRepository.findById(id)
+                .orElseThrow(()-> new ResumeEmailNotFound("Id not found"));
     }
 
     @Override
     public List<Resume> allResumes() {
-        return List.of();
+        return resumeRepository.findAll();
     }
 }

@@ -3,9 +3,11 @@ package com.semicolon.africa.jobcrafter.utils;
 import com.semicolon.africa.jobcrafter.data.model.Freelancer;
 import com.semicolon.africa.jobcrafter.data.model.Resume;
 import com.semicolon.africa.jobcrafter.dto.request.AddResumeRequest;
+import com.semicolon.africa.jobcrafter.dto.request.UpdateResumeRequest;
 import com.semicolon.africa.jobcrafter.dto.response.AddFreelancerResponse;
 import com.semicolon.africa.jobcrafter.dto.response.AddResumeResponse;
 import com.semicolon.africa.jobcrafter.dto.response.FreelancerUpdateResponse;
+import com.semicolon.africa.jobcrafter.dto.response.UpdateResumeResponse;
 
 public class Mapper {
 
@@ -80,5 +82,47 @@ public class Mapper {
         response.setMessage("Successfully created resume");
         return response;
     }
+
+    public static Resume getResumeUpdate(UpdateResumeRequest request) {
+        Resume resume = new Resume();
+        resume.setFirstName(request.getFirstName());
+        resume.setFirstName(request.getFirstName());
+        resume.setLastName(request.getLastName());
+        resume.setEmail(request.getEmail());
+        resume.setPhoneNumber(request.getPhoneNumber());
+        resume.setHomeAddress(request.getHomeAddress());
+        resume.setPosition(request.getPosition());
+        resume.setVolunteer(request.getVolunteer());
+        resume.setPersonalProjects(request.getPersonalProjects());
+        resume.setWorkExperience(request.getWorkExperience());
+        resume.setSkills(request.getSkills());
+        resume.setFormerCompany(request.getFormerCompany());
+        resume.setEducationStatus(request.getEducationStatus());
+        resume.setMarriageStatus(request.getMarriageStatus());
+        resume.setCertificate(request.getCertificate());
+        return resume;
+    }
+
+    public static UpdateResumeResponse getUpdateResumeResponse(Resume resume) {
+        UpdateResumeResponse response = new UpdateResumeResponse();
+        response.setFirstName(resume.getFirstName());
+        response.setLastName(resume.getLastName());
+        response.setEmail(resume.getEmail());
+        response.setPhoneNumber(resume.getPhoneNumber());
+        response.setHomeAddress(resume.getHomeAddress());
+        response.setPosition(resume.getPosition());
+        response.setVolunteer(resume.getVolunteer());
+        response.setPersonalProjects(resume.getPersonalProjects());
+        response.setWorkExperience(resume.getWorkExperience());
+        response.setSkills(resume.getSkills());
+        response.setFormerCompany(resume.getFormerCompany());
+        response.setEducationStatus(resume.getEducationStatus());
+        response.setMarriageStatus(resume.getMarriageStatus());
+        response.setCertificate(resume.getCertificate());
+        response.setMessage("Successfully Updated");
+        return response;
+    }
+
+
 
 }
