@@ -27,16 +27,8 @@ public class ResumeServiceImpl implements ResumeService{
     public AddResumeResponse createResume(AddResumeRequest request) {
         validateResumeEmail(request.getEmail());
         Resume resume = createResumeRequestMapper(request);
-        findResumeByFirstName(request.getFirstName());
         resume = resumeRepository.save(resume);
         return getAddResumeResponse(resume);
-    }
-
-    private void findResumeByFirstName(String firstName) {
-        boolean isFirstNameExist = resumeRepository.existByFirstName(firstName);
-        if (isFirstNameExist){
-            throw new FirstNameNotFound("Name not found");
-        }
     }
 
     private void validateResumeEmail(String email) {
@@ -45,9 +37,9 @@ public class ResumeServiceImpl implements ResumeService{
             throw new ResumeEmailNotFound("Email Already exist");
         }
     }
-
     @Override
     public UpdateResumeResponse updateResume(UpdateResumeRequest request) {
+        validateResumeEmail(request.getEmail());
         Resume resume = getResumeUpdate(request);
         resume= resumeRepository.save(resume);
         return getUpdateResumeResponse(resume);
@@ -70,5 +62,10 @@ public class ResumeServiceImpl implements ResumeService{
     @Override
     public List<Resume> allResumes() {
         return resumeRepository.findAll();
+    }
+
+    @Override
+    public List<Resume> findResumeByFirstNameAndLastName(String firstName, String lastName) {
+        return resumeRepository.findResumeByFirstNameAndLastName(firstName, lastName);
     }
 }

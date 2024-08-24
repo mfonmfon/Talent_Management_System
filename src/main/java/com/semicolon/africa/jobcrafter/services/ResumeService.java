@@ -18,4 +18,6 @@ public interface ResumeService {
     DeleteResumeResponse deleteResume(String id);
 
     List<Resume> allResumes();
+
+    List<Resume> findResumeByFirstNameAndLastName(String firstName, String lastName);
 }
