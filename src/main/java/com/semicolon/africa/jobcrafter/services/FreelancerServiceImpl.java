@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.semicolon.africa.jobcrafter.utils.Mapper.getAddFreelancerResponse;
+import static com.semicolon.africa.jobcrafter.utils.Mapper.getFreelancerUpdateResponse;
 
 @Service
 public class FreelancerServiceImpl implements FreelancerServices {
@@ -117,7 +118,6 @@ public class FreelancerServiceImpl implements FreelancerServices {
         return taskRepository.findAll();
     }
 
-
     @Override
     public FreelancerDeleteResponse withdrawApplication(String id) {
         Freelancer freelancer = findFreelancerById(id);
@@ -148,18 +148,7 @@ public class FreelancerServiceImpl implements FreelancerServices {
         freelancer.setJobType(request.getJobType());
         freelancer.setDateUpdated(request.getDateUpdated());
         freelancerRepository.save(freelancer);
-        FreelancerUpdateResponse response = new FreelancerUpdateResponse();
-        response.setFirstName(freelancer.getFirstName());
-        response.setLastName(freelancer.getLastName());
-        response.setJobTitle(freelancer.getJobTitle());
-        response.setJobDescription(freelancer.getJobDescription());
-        response.setEmail(freelancer.getEmail());
-        response.setCv(freelancer.getCv());
-        response.setJobType(freelancer.getJobType());
-        response.setPhoneNumber(freelancer.getPhoneNumber());
-        response.setDateUpdated(freelancer.getDateUpdated());
-        response.setMessage("Updated successfully");
-        return response;
+        return getFreelancerUpdateResponse(freelancer);
     }
 
 
