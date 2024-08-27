@@ -30,7 +30,6 @@ public class ResumeServiceImpl implements ResumeService{
         resume = resumeRepository.save(resume);
         return getAddResumeResponse(resume);
     }
-
     private void validateResumeEmail(String email) {
         boolean isValidEmail = resumeRepository.existsByEmail(email);
         if (isValidEmail){
@@ -44,7 +43,6 @@ public class ResumeServiceImpl implements ResumeService{
         resume= resumeRepository.save(resume);
         return getUpdateResumeResponse(resume);
     }
-
     @Override
     public DeleteResumeResponse deleteResume(String id) {
         Resume resume = findResumeById(id);
@@ -53,7 +51,6 @@ public class ResumeServiceImpl implements ResumeService{
         response.setMessage("Resume Deleted");
         return response;
     }
-
     private Resume findResumeById(String id) {
         return resumeRepository.findById(id)
                 .orElseThrow(()-> new ResumeEmailNotFound("Id not found"));

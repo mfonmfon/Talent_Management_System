@@ -67,6 +67,7 @@ class ResumeServiceImplTest {
         assertThat(response).isNotNull();
     }
 
+
     private static UpdateResumeRequest getUpdateResumeRequest() {
         UpdateResumeRequest request = new UpdateResumeRequest();
         request.setFirstName("Edward");
@@ -86,14 +87,12 @@ class ResumeServiceImplTest {
         return request;
     }
 
-
     @Test
     public void testThatEmailCanNotBeUsedTwoTimes() {
         AddResumeRequest request = addResumeMapper();
         AddResumeResponse response = resumeService.createResume(request);
         assertThrows(ResumeEmailNotFound.class, () -> resumeService.createResume(request));
     }
-
     @Test
     public void testThatResumeCanBeDeleted() {
         AddResumeRequest request = addResumeMapper();

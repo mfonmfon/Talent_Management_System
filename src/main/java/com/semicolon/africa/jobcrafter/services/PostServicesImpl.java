@@ -52,7 +52,7 @@ public class PostServicesImpl implements  PostServices {
     }
     @Override
     public UpdatePostResponse updatePost(UpdatePostRequest request) {
-        Post post = findPostByTitle(request.getTitle());
+        Post post = new Post();
         post.setTitle(request.getTitle());
         post.setDescription(request.getDescription());
         post.setFixedPrice(request.getFixedPrice());
