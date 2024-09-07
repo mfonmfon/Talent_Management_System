@@ -117,7 +117,6 @@ public class FreelancerServiceImpl implements FreelancerServices {
     public List<Task> displayAllTask() {
         return taskRepository.findAll();
     }
-
     @Override
     public FreelancerDeleteResponse withdrawApplication(String id) {
         Freelancer freelancer = findFreelancerById(id);
@@ -126,7 +125,6 @@ public class FreelancerServiceImpl implements FreelancerServices {
         response.setMessage("Deleted");
         return response;
     }
-
     private Freelancer findFreelancerById(String id) {
         for (Freelancer freelancer: freelancerRepository.findAll()){
             if (freelancer.getId().equals(id)){
@@ -135,7 +133,6 @@ public class FreelancerServiceImpl implements FreelancerServices {
         }
         throw new InvalidFreelancerEmail("Not Found");
     }
-
     @Override
     public FreelancerUpdateResponse updateApplication(FreelancerUpdateRequest request) {
         Freelancer freelancer = new Freelancer();

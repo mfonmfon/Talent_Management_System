@@ -38,7 +38,7 @@ class TaskServicesTest {
         AddTaskRequest request = new AddTaskRequest();
         request.setTitle("Create a landing page");
         request.setDescription("The landing page must be beautiful and responsive");
-        request.setDeadLine(LocalDateTime.now());
+        request.setDeadLine("12/6/2024");
         AddTaskResponse response = taskService.createTask(request);
         assertThat(response.getMessage()).contains("Task created successfully");
         assertThat(response).isNotNull();
@@ -49,7 +49,7 @@ class TaskServicesTest {
         UpdateTaskRequest request = new UpdateTaskRequest();
         request.setTitle("Link the backend");
         request.setDescription("Link you backend with react and save all your fields in the data base");
-        request.setDeadLine(LocalDateTime.now());
+        request.setDeadLine("12/6/2024  ");
         UpdateTaskResponse response = taskService.updatedTask(request);
         assertThat(response.getMessage()).contains("Task updated successfully");
         assertThat(response).isNotNull();

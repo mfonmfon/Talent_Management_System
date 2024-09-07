@@ -12,8 +12,6 @@ import java.util.List;
 
 public interface FreelancerServices {
 
-
-
     FreelancerRegisterResponse register(FreelancerRegisterRequest request);
 
     FreelancerLoginResponse login(FreelancerLoginRequest request);

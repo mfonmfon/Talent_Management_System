@@ -8,6 +8,7 @@ import com.semicolon.africa.jobcrafter.dto.response.AddResumeResponse;
 import com.semicolon.africa.jobcrafter.dto.response.DeleteResumeResponse;
 import com.semicolon.africa.jobcrafter.dto.response.UpdateResumeResponse;
 import com.semicolon.africa.jobcrafter.exception.FirstNameNotFound;
+import com.semicolon.africa.jobcrafter.exception.InvalidFreelancerEmail;
 import com.semicolon.africa.jobcrafter.exception.ResumeEmailNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,9 +32,10 @@ public class ResumeServiceImpl implements ResumeService{
         return getAddResumeResponse(resume);
     }
     private void validateResumeEmail(String email) {
-        boolean isValidEmail = resumeRepository.existsByEmail(email);
-        if (isValidEmail){
-            throw new ResumeEmailNotFound("Email Already exist");
+        for(Resume resume: resumeRepository.findAll()){
+            if (resume.getEmail().equals(email)){
+                throw new InvalidFreelancerEmail("Email Already exist");
+            }
         }
     }
     @Override

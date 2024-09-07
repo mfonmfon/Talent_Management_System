@@ -55,7 +55,6 @@ public class TaskServiceImpl implements TaskServices{
         response.setMessage("Task updated successfully");
         return response;
     }
-
     @Override
     public DeleteTaskResponse deleteTask(String id) {
         Task task = findTasksById(id);
@@ -64,12 +63,10 @@ public class TaskServiceImpl implements TaskServices{
         response.setMessage("Task deleted");
         return response;
     }
-
     private Task findTasksById(String id) {
         return taskRepository.findById(id).
                 orElseThrow(()-> new TaskIdNotFoundException("Id Not Found"));
     }
-
     @Override
     public List<Task> tasks() {
         return taskRepository.findAll();

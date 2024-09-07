@@ -14,4 +14,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Payment {
     private String id;
     private CardType cardType;
+    private CreditCard card;
 }

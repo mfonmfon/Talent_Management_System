@@ -6,9 +6,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface ResumeRepository extends MongoRepository<Resume, String> {
-    boolean existsByEmail(String email);
 
     List<Resume> findResumeByFirstNameAndLastName(String firstName, String lastName);
 
-
+//    boolean findByEmail(String email);
 }

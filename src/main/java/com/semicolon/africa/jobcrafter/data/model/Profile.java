@@ -29,7 +29,6 @@ public class Profile {
     private String stateOfOrigin;
     private String residence;
     private String country;
-
     @DBRef
      List<Profile> profileList;
 

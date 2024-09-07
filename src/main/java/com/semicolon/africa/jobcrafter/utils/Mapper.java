@@ -1,13 +1,11 @@
 package com.semicolon.africa.jobcrafter.utils;
 
 import com.semicolon.africa.jobcrafter.data.model.Freelancer;
+import com.semicolon.africa.jobcrafter.data.model.Profile;
 import com.semicolon.africa.jobcrafter.data.model.Resume;
-import com.semicolon.africa.jobcrafter.dto.request.AddResumeRequest;
-import com.semicolon.africa.jobcrafter.dto.request.UpdateResumeRequest;
-import com.semicolon.africa.jobcrafter.dto.response.AddFreelancerResponse;
-import com.semicolon.africa.jobcrafter.dto.response.AddResumeResponse;
-import com.semicolon.africa.jobcrafter.dto.response.FreelancerUpdateResponse;
-import com.semicolon.africa.jobcrafter.dto.response.UpdateResumeResponse;
+import com.semicolon.africa.jobcrafter.dto.request.*;
+import com.semicolon.africa.jobcrafter.dto.response.*;
+import com.semicolon.africa.jobcrafter.exception.IncorrectEmailInput;
 
 public class Mapper {
 
@@ -123,6 +121,80 @@ public class Mapper {
         return response;
     }
 
+    private void freelancerAddRequest(AddFreelancerRequest request, Freelancer freelancer) {
+        freelancer.setFirstName(request.getFirstName());
+        freelancer.setLastName(request.getLastName());
+        freelancer.setJobTitle(request.getJobTitle());
+        freelancer.setJobDescription(request.getJobDescription());
+        freelancer.setPhoneNumber(request.getPhoneNumber());
+        freelancer.setEmail(request.getEmail());
+        freelancer.setCv(request.getCv());
+        freelancer.setJobType(request.getJobType());
+        freelancer.setDateCreated(request.getDateApplied());
+    }
 
+
+    public static void addProfileRequest(AddProfileRequest request, Profile profile) {
+        profile.setFirstName(request.getFirstName());
+        profile.setLastName(request.getLastName());
+        profile.setEmail(request.getEmail());
+        profile.setUserName(request.getUserName());
+        if (!(profile.getEmail().contains("@")) && profile.getEmail().contains(".")){
+            throw new IncorrectEmailInput("Enter a valid email");
+        }
+        profile.setEmail(request.getBio());
+        profile.setPhoneNumber(request.getPhoneNumber());
+        profile.setCountry(request.getCountry());
+        profile.setStateOfOrigin(request.getStateOfOrigin());
+        profile.setResidence(request.getResidence());
+        profile.setPassword(request.getPassword());
+    }
+
+    public static AddProfileResponse getAddProfileResponse(Profile profile) {
+        AddProfileResponse response = new AddProfileResponse();
+        response.setProfileId(profile.getId());
+        response.setFirstName(profile.getFirstName());
+        response.setLastName(profile.getLastName());
+        response.setEmail(profile.getEmail());
+        response.setPhoneNumber(profile.getPhoneNumber());
+        response.setBio(profile.getBio());
+        response.setCountry(profile.getCountry());
+        response.setStateOfOrigin(profile.getStateOfOrigin());
+        response.setResidence(profile.getResidence());
+        response.setPassword(profile.getPassword());
+        response.setMessage("Successfully added Profile");
+        return response;
+    }
+
+    public static UpdateProfileResponse getUpdateProfileResponse(Profile profile) {
+        UpdateProfileResponse response = new UpdateProfileResponse();
+        response.setFirstName(profile.getFirstName());
+        response.setLastName(profile.getLastName());
+        response.setUserName(profile.getUserName());
+        response.setBio(profile.getBio());
+        response.setEmail(profile.getEmail());
+        response.setPhoneNumber(profile.getPhoneNumber());
+        response.setCountry(profile.getCountry());
+        response.setStateOfOrigin(profile.getStateOfOrigin());
+        response.setResidence(profile.getResidence());
+        response.setMessage("Updated successfully");
+        return response;
+    }
+
+    public static Profile UpdateProfileRequest(UpdateProfileRequest request) {
+        Profile profile = new Profile();
+        profile.setFirstName(request.getFirstName());
+        profile.setLastName(request.getLastName());
+        profile.setUserName(request.getUserName());
+        profile.setBio(request.getBio());
+        profile.setEmail(request.getEmail());
+        profile.setPhoneNumber(request.getPhoneNumber());
+        profile.setCountry(request.getCountry());
+        profile.setStateOfOrigin(request.getStateOfOrigin());
+        profile.setResidence(request.getResidence());
+        profile.setPassword(request.getPassword());
+        profile.setPhoneNumber(request.getPhoneNumber());
+        return profile;
+    }
 
 }
