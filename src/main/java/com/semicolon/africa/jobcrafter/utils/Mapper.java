@@ -133,7 +133,6 @@ public class Mapper {
         freelancer.setDateCreated(request.getDateApplied());
     }
 
-
     public static void addProfileRequest(AddProfileRequest request, Profile profile) {
         profile.setFirstName(request.getFirstName());
         profile.setLastName(request.getLastName());
@@ -147,7 +146,7 @@ public class Mapper {
         profile.setCountry(request.getCountry());
         profile.setStateOfOrigin(request.getStateOfOrigin());
         profile.setResidence(request.getResidence());
-        profile.setPassword(request.getPassword());
+//        profile.setPassword(request.getPassword());
     }
 
     public static AddProfileResponse getAddProfileResponse(Profile profile) {

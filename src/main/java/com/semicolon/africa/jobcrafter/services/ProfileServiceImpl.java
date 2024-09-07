@@ -9,13 +9,13 @@ import com.semicolon.africa.jobcrafter.dto.request.UpdateProfileRequest;
 import com.semicolon.africa.jobcrafter.dto.response.AddProfileResponse;
 import com.semicolon.africa.jobcrafter.dto.response.DeleteProfileResponse;
 import com.semicolon.africa.jobcrafter.dto.response.UpdateProfileResponse;
-import com.semicolon.africa.jobcrafter.exception.IncorrectEmailInput;
-import com.semicolon.africa.jobcrafter.exception.ProfileIdException;
-import com.semicolon.africa.jobcrafter.exception.ProfileIdNotFound;
-import com.semicolon.africa.jobcrafter.exception.TaskIdNotFoundException;
+import com.semicolon.africa.jobcrafter.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Objects;
+
+import static ch.qos.logback.core.util.StringUtil.isNullOrEmpty;
 import static com.semicolon.africa.jobcrafter.utils.Mapper.*;
 
 @Service
@@ -28,8 +28,18 @@ public class ProfileServiceImpl implements ProfileServices{
     public AddProfileResponse addProfile(AddProfileRequest request) {
         Profile profile = new Profile();
         addProfileRequest(request, profile);
-        profileRepository.save(profile);
-        return getAddProfileResponse(profile);
+        if (isNullOrEmpty(profile.getFirstName())||
+                isNullOrEmpty(profile.getLastName()) ||
+                isNullOrEmpty(profile.getEmail()) ||
+                isNullOrEmpty(profile.getPhoneNumber())||
+                isNullOrEmpty(profile.getBio())||
+                isNullOrEmpty(profile.getCountry())||
+                isNullOrEmpty(profile.getResidence()) ||
+                isNullOrEmpty(profile.getStateOfOrigin())){
+            throw new EmptyFieldsException("Empty Fields, please enter all fields");
+        }
+            profileRepository.save(profile);
+            return getAddProfileResponse(profile);
     }
     @Override
     public UpdateProfileResponse updateProfile(UpdateProfileRequest request) {

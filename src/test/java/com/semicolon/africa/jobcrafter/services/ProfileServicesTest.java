@@ -8,6 +8,7 @@ import com.semicolon.africa.jobcrafter.dto.request.UpdateProfileRequest;
 import com.semicolon.africa.jobcrafter.dto.response.AddProfileResponse;
 import com.semicolon.africa.jobcrafter.dto.response.DeleteProfileResponse;
 import com.semicolon.africa.jobcrafter.dto.response.UpdateProfileResponse;
+import com.semicolon.africa.jobcrafter.exception.EmailNotExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,4 +70,19 @@ class ProfileServicesTest {
         assertThat(response1.getMessage()).contains("Deleted");
     }
 
+    @Test
+    public void testThatWhenAllTheFieldsAreEmpty_throwAnException(){
+        AddProfileRequest profileRequest = new AddProfileRequest();
+        profileRequest.setFirstName("");
+        profileRequest.setLastName("");
+        profileRequest.setUserName("");
+        profileRequest.setEmail("");
+        profileRequest.setBio("");
+        profileRequest.setCountry("");
+        profileRequest.setStateOfOrigin("");
+        profileRequest.setResidence("");
+        profileRequest.setPhoneNumber("");
+        profileRequest.setPassword("");
+        assertThrows(EmailNotExistException.class, ()-> profileServices.addProfile(profileRequest));
+    }
 }
