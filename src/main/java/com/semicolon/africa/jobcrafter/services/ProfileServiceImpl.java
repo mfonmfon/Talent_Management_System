@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
-
 import static ch.qos.logback.core.util.StringUtil.isNullOrEmpty;
 import static com.semicolon.africa.jobcrafter.utils.Mapper.*;
 
@@ -28,22 +27,40 @@ public class ProfileServiceImpl implements ProfileServices{
     public AddProfileResponse addProfile(AddProfileRequest request) {
         Profile profile = new Profile();
         addProfileRequest(request, profile);
-        if (isNullOrEmpty(profile.getFirstName())||
-                isNullOrEmpty(profile.getLastName()) ||
-                isNullOrEmpty(profile.getEmail()) ||
-                isNullOrEmpty(profile.getPhoneNumber())||
-                isNullOrEmpty(profile.getBio())||
-                isNullOrEmpty(profile.getCountry())||
-                isNullOrEmpty(profile.getResidence()) ||
-                isNullOrEmpty(profile.getStateOfOrigin())){
+        if (isValueNullOrEmpty(profile.getFirstName()) ||
+                isValueNullOrEmpty(profile.getLastName())||
+                isValueNullOrEmpty(profile.getEmail()) ||
+                isValueNullOrEmpty(profile.getPhoneNumber())||
+                isValueNullOrEmpty(profile.getBio()) ||
+                isValueNullOrEmpty(profile.getCountry()) ||
+                isValueNullOrEmpty(profile.getResidence()) ||
+                isValueNullOrEmpty(profile.getStateOfOrigin())) {
             throw new EmptyFieldsException("Empty Fields, please enter all fields");
         }
             profileRepository.save(profile);
             return getAddProfileResponse(profile);
+        }
+    private boolean isValueNullOrEmpty(String value){
+        boolean isValueEmpty =  value == null || value.trim().isEmpty();
+        if (isValueEmpty){
+            throw new NoFieldsFoundException("Empty Fields, please enter all fields");
+        }
+        return Boolean.parseBoolean(value);
     }
+
     @Override
     public UpdateProfileResponse updateProfile(UpdateProfileRequest request) {
         Profile profile = UpdateProfileRequest(request);
+        if (isValueNullOrEmpty(profile.getFirstName())||
+                isValueNullOrEmpty(profile.getLastName()) ||
+                isValueNullOrEmpty(profile.getEmail()) ||
+                isValueNullOrEmpty(profile.getPhoneNumber())||
+                isValueNullOrEmpty(profile.getBio())||
+                isValueNullOrEmpty(profile.getCountry())||
+                isValueNullOrEmpty(profile.getResidence()) ||
+                isValueNullOrEmpty(profile.getStateOfOrigin())){
+            throw new EmptyFieldsException("Empty Fields, please enter all fields");
+        }
         profileRepository.save(profile);
         return getUpdateProfileResponse(profile);
     }

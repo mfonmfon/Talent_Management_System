@@ -9,6 +9,7 @@ import com.semicolon.africa.jobcrafter.dto.response.AddProfileResponse;
 import com.semicolon.africa.jobcrafter.dto.response.DeleteProfileResponse;
 import com.semicolon.africa.jobcrafter.dto.response.UpdateProfileResponse;
 import com.semicolon.africa.jobcrafter.exception.EmailNotExistException;
+import com.semicolon.africa.jobcrafter.exception.EmptyFieldsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,6 @@ class ProfileServicesTest {
         profileRequest.setResidence("");
         profileRequest.setPhoneNumber("");
         profileRequest.setPassword("");
-        assertThrows(EmailNotExistException.class, ()-> profileServices.addProfile(profileRequest));
+        assertThrows(EmptyFieldsException.class, ()-> profileServices.addProfile(profileRequest));
     }
 }
