@@ -57,6 +57,7 @@ public class ProfileServiceImpl implements ProfileServices{
     @Override
     public UpdateProfileResponse updateProfile(UpdateProfileRequest request) {
         Profile profile = UpdateProfileRequest(request);
+        validateEmail(request.getEmail());
         if (isValueNullOrEmpty(profile.getFirstName())||
                 isValueNullOrEmpty(profile.getLastName()) ||
                 isValueNullOrEmpty(profile.getEmail()) ||

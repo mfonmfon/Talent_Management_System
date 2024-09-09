@@ -156,6 +156,9 @@ public class Mapper {
         response.setUserName(profile.getUserName());
         response.setBio(profile.getBio());
         response.setEmail(profile.getEmail());
+        if (!(profile.getEmail().contains("@")) && profile.getEmail().contains(".")){
+            throw new IncorrectEmailInput("Enter a valid email");
+        }
         response.setPhoneNumber(profile.getPhoneNumber());
         response.setCountry(profile.getCountry());
         response.setStateOfOrigin(profile.getStateOfOrigin());
@@ -186,6 +189,9 @@ public class Mapper {
         profile.setUserName(request.getUserName());
         profile.setBio(request.getBio());
         profile.setEmail(request.getEmail());
+        if (!(profile.getEmail().contains("@")) && profile.getEmail().contains(".")){
+            throw new IncorrectEmailInput("Enter a valid email");
+        }
         profile.setPhoneNumber(request.getPhoneNumber());
         profile.setCountry(request.getCountry());
         profile.setStateOfOrigin(request.getStateOfOrigin());
@@ -193,5 +199,4 @@ public class Mapper {
         profile.setPhoneNumber(request.getPhoneNumber());
         return profile;
     }
-
 }

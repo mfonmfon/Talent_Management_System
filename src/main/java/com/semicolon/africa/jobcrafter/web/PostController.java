@@ -30,7 +30,7 @@ public class PostController {
                     HttpStatus.OK);
         }
         catch (Exception exception){
-            return new ResponseEntity<>(new PostApiResponse(false, exception),
+            return new ResponseEntity<>(new PostApiResponse(false, exception.getMessage()),
                     HttpStatus.BAD_REQUEST);
         }
     }
@@ -42,7 +42,7 @@ public class PostController {
                     HttpStatus.OK);
         }
         catch (Exception exception){
-         return new ResponseEntity<>(new PostApiResponse(false, exception),
+         return new ResponseEntity<>(new PostApiResponse(false, exception.getMessage()),
                  HttpStatus.BAD_REQUEST);
         }
     }
@@ -55,7 +55,7 @@ public class PostController {
                    HttpStatus.OK);
         }
         catch (Exception exception){
-            return new ResponseEntity<>(new PostApiResponse(false, exception),
+            return new ResponseEntity<>(new PostApiResponse(false, exception.getMessage()),
                     HttpStatus.BAD_REQUEST);
         }
     }
@@ -67,7 +67,7 @@ public class PostController {
                     HttpStatus.OK);
         }
         catch (Exception exception){
-            return new ResponseEntity<>(new PostApiResponse(false, exception),
+            return new ResponseEntity<>(new PostApiResponse(false, exception.getMessage()),
                     HttpStatus.BAD_REQUEST);
         }
     }
