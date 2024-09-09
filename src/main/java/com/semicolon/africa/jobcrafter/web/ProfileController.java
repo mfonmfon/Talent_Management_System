@@ -31,7 +31,7 @@ public class ProfileController {
                     HttpStatus.CREATED);
         }
         catch (Exception exception){
-            return new ResponseEntity<>(new ProfileApiResponse(false, exception),
+            return new ResponseEntity<>(new ProfileApiResponse(false, exception.getMessage()),
                     HttpStatus.BAD_REQUEST);
         }
     }
@@ -43,7 +43,7 @@ public class ProfileController {
                     HttpStatus.OK);
         }
         catch (Exception exception){
-            return new ResponseEntity<>(new ProfileApiResponse(false, exception),
+            return new ResponseEntity<>(new ProfileApiResponse(false, exception.getMessage()),
                     HttpStatus.BAD_REQUEST);
         }
     }
@@ -55,7 +55,7 @@ public class ProfileController {
                     HttpStatus.OK);
         }
         catch (Exception exception){
-            return new ResponseEntity<>(new ProfileApiResponse(false, exception),
+            return new ResponseEntity<>(new ProfileApiResponse(false, exception.getMessage()),
                     HttpStatus.OK);
         }
     }
@@ -67,7 +67,7 @@ public class ProfileController {
                     HttpStatus.OK);
         }
         catch (Exception exception){
-            return new ResponseEntity<>(new ProfileApiResponse(true, exception),
+            return new ResponseEntity<>(new ProfileApiResponse(true, exception.getMessage()),
                     HttpStatus.NOT_FOUND);
         }
     }
@@ -79,10 +79,8 @@ public class ProfileController {
                     HttpStatus.OK);
         }
         catch (Exception exception){
-            return new ResponseEntity<>(new ProfileApiResponse(true, exception),
+            return new ResponseEntity<>(new ProfileApiResponse(true, exception.getMessage()),
                     HttpStatus.NOT_FOUND);
         }
-
     }
-
 }
