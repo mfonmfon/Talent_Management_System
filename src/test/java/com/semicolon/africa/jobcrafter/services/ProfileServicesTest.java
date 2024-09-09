@@ -8,6 +8,7 @@ import com.semicolon.africa.jobcrafter.dto.request.UpdateProfileRequest;
 import com.semicolon.africa.jobcrafter.dto.response.AddProfileResponse;
 import com.semicolon.africa.jobcrafter.dto.response.DeleteProfileResponse;
 import com.semicolon.africa.jobcrafter.dto.response.UpdateProfileResponse;
+import com.semicolon.africa.jobcrafter.exception.EmailAlreadyExist;
 import com.semicolon.africa.jobcrafter.exception.EmailNotExistException;
 import com.semicolon.africa.jobcrafter.exception.EmptyFieldsException;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,7 +51,6 @@ class ProfileServicesTest {
         profileRequest.setStateOfOrigin("Lagos");
         profileRequest.setResidence("Bariga");
         profileRequest.setPhoneNumber("90346512345");
-        profileRequest.setPassword("12345");
         return profileRequest;
     }
     @Test
@@ -83,7 +83,16 @@ class ProfileServicesTest {
         profileRequest.setStateOfOrigin("");
         profileRequest.setResidence("");
         profileRequest.setPhoneNumber("");
-        profileRequest.setPassword("");
         assertThrows(EmptyFieldsException.class, ()-> profileServices.addProfile(profileRequest));
+    }
+
+    @Test
+    public void testThatWhenAnEmailAlreadyExist_ThrowAnException(){
+        createProfile();
+//        createProfile();
+        AddProfileResponse response = profileServices.addProfile(createProfile());
+//        AddProfileResponse response1 = profileServices.addProfile(createProfile());
+        assertThat(response).isNotNull();
+        assertThrows(EmailAlreadyExist.class, ()-> profileServices.addProfile(createProfile()));
     }
 }

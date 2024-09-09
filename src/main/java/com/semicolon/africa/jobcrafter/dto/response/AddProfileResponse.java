@@ -12,7 +12,6 @@ public class AddProfileResponse {
     private String userName;
     private String email;
     private String bio;
-    private String password;
     private String phoneNumber;
     private String stateOfOrigin;
     private String residence;

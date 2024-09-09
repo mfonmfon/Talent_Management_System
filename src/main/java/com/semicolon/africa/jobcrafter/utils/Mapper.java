@@ -141,12 +141,11 @@ public class Mapper {
         if (!(profile.getEmail().contains("@")) && profile.getEmail().contains(".")){
             throw new IncorrectEmailInput("Enter a valid email");
         }
-        profile.setEmail(request.getBio());
+        profile.setBio(request.getBio());
         profile.setPhoneNumber(request.getPhoneNumber());
         profile.setCountry(request.getCountry());
         profile.setStateOfOrigin(request.getStateOfOrigin());
         profile.setResidence(request.getResidence());
-//        profile.setPassword(request.getPassword());
     }
 
     public static AddProfileResponse getAddProfileResponse(Profile profile) {
@@ -154,13 +153,13 @@ public class Mapper {
         response.setProfileId(profile.getId());
         response.setFirstName(profile.getFirstName());
         response.setLastName(profile.getLastName());
+        response.setUserName(profile.getUserName());
+        response.setBio(profile.getBio());
         response.setEmail(profile.getEmail());
         response.setPhoneNumber(profile.getPhoneNumber());
-        response.setBio(profile.getBio());
         response.setCountry(profile.getCountry());
         response.setStateOfOrigin(profile.getStateOfOrigin());
         response.setResidence(profile.getResidence());
-        response.setPassword(profile.getPassword());
         response.setMessage("Successfully added Profile");
         return response;
     }
@@ -191,7 +190,6 @@ public class Mapper {
         profile.setCountry(request.getCountry());
         profile.setStateOfOrigin(request.getStateOfOrigin());
         profile.setResidence(request.getResidence());
-        profile.setPassword(request.getPassword());
         profile.setPhoneNumber(request.getPhoneNumber());
         return profile;
     }

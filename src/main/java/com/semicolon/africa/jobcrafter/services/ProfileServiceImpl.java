@@ -27,6 +27,7 @@ public class ProfileServiceImpl implements ProfileServices{
     public AddProfileResponse addProfile(AddProfileRequest request) {
         Profile profile = new Profile();
         addProfileRequest(request, profile);
+        validateEmail(request.getEmail());
         if (isValueNullOrEmpty(profile.getFirstName()) ||
                 isValueNullOrEmpty(profile.getLastName())||
                 isValueNullOrEmpty(profile.getEmail()) ||
@@ -35,17 +36,22 @@ public class ProfileServiceImpl implements ProfileServices{
                 isValueNullOrEmpty(profile.getCountry()) ||
                 isValueNullOrEmpty(profile.getResidence()) ||
                 isValueNullOrEmpty(profile.getStateOfOrigin())) {
-            throw new EmptyFieldsException("Empty Fields, please enter all fields");
+                throw new EmptyFieldsException("Empty Fields, please enter all fields");
         }
             profileRepository.save(profile);
             return getAddProfileResponse(profile);
         }
-    private boolean isValueNullOrEmpty(String value){
-        boolean isValueEmpty =  value == null || value.trim().isEmpty();
-        if (isValueEmpty){
-            throw new NoFieldsFoundException("Empty Fields, please enter all fields");
+
+    private void validateEmail(String email) {
+        for (Profile profile: profileRepository.findAll()){
+            if (profile.getEmail().equals(email)){
+                throw new EmailAlreadyExist("Account already exist");
+            }
         }
-        return Boolean.parseBoolean(value);
+    }
+
+    private boolean isValueNullOrEmpty(String value) {
+        return  value == null || value.trim().isEmpty();
     }
 
     @Override
@@ -86,7 +92,7 @@ public class ProfileServiceImpl implements ProfileServices{
     }
     @Override
     public List<Profile> searchByLastName(String firstName) {
-        return profileRepository.findByFirstName(firstName);
+        return profileRepository.findByLastName(firstName);
     }
     @Override
     public List<Profile> searchByUserName(String userName) {

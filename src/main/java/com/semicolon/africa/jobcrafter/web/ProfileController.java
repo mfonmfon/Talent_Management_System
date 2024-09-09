@@ -71,8 +71,7 @@ public class ProfileController {
                     HttpStatus.NOT_FOUND);
         }
     }
-
-    @GetMapping("/searchByLastNa{lastName}")
+    @GetMapping("/searchProfileByLastName{lastName}")
     public ResponseEntity<?> searchProfileByLastName(@PathVariable String lastName){
         try {
             List<Profile> findByLastName = profileServices.searchByLastName(lastName);
