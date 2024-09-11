@@ -48,7 +48,6 @@ public class ResumeController {
                     HttpStatus.BAD_REQUEST);
         }
     }
-
     @DeleteMapping("{id}/delete")
     public ResponseEntity<?> delete(@PathVariable String id){
         try {
@@ -73,7 +72,6 @@ public class ResumeController {
                     HttpStatus.BAD_REQUEST);
         }
     }
-
     @GetMapping("{firstName}/{lastName}")
     public ResponseEntity<?> searchByFirstNameAndLastName(@PathVariable String firstName, @PathVariable String lastName){
      try {
